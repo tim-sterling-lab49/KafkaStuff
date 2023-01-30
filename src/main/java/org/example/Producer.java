@@ -1,13 +1,13 @@
 package org.example;
 
 import org.apache.kafka.common.errors.SerializationException;
-import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 @EnableScheduling
@@ -32,7 +32,12 @@ public class Producer {
 
         try {
 
-            this.kafkaTemplate.send("quotes", quote);
+            Message<Quote> message = MessageBuilder
+                    .withPayload(quote)
+                    .setHeader(KafkaHeaders.TOPIC, "quotes")
+                    .build();
+
+            kafkaTemplate.send(message);
 
         } catch (SerializationException se){
 

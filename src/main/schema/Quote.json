@@ -15,11 +15,6 @@
         "symbol" : {
             "description": "ticker",
             "type": "string"
-        },
-
-        "price" : {
-            "description": "price",
-            "type": "number"
         }
 
     },
